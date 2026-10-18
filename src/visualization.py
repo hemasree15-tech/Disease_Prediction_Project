@@ -28,13 +28,19 @@ def plot_accuracy_comparison(accuracy_table):
 
 def plot_feature_importance(best_model, feature_columns):
     """
-    Bar graph showing which symptoms are most important for
-    prediction. This only works for tree-based models
-    (Random Forest, Decision Tree, Gradient Boosting) which have a
-    'feature_importances_' attribute.
+    Bar graph showing which patient details are most important for
+    prediction. Tree-based models (Random Forest, Decision Tree,
+    Gradient Boosting) have a 'feature_importances_' attribute.
+    Logistic Regression has coefficients, so we use their absolute
+    values instead.
     """
+    importances = None
     if hasattr(best_model, "feature_importances_"):
         importances = best_model.feature_importances_
+    elif hasattr(best_model, "coef_"):
+        importances = np.abs(best_model.coef_[0])
+
+    if importances is not None:
         indices = np.argsort(importances)[::-1][:15]  # top 15 features
 
         plt.figure(figsize=(12, 6))
@@ -44,7 +50,7 @@ def plot_feature_importance(best_model, feature_columns):
             [feature_columns[i] for i in indices],
             rotation=90,
         )
-        plt.title("Top 15 Important Symptoms")
+        plt.title("Top 15 Important Features")
         plt.tight_layout()
         plt.savefig(GRAPH_FOLDER + "/feature_importance.png")
         plt.close()
@@ -54,7 +60,7 @@ def plot_feature_importance(best_model, feature_columns):
 
 
 def plot_disease_count(data):
-    """A simple horizontal bar graph of disease counts."""
+    """A simple horizontal bar graph of healthy / disease counts."""
     plt.figure(figsize=(10, 8))
     data["Disease"].value_counts().plot(kind="barh", color="brown")
     plt.title("Disease Count Graph")

@@ -62,11 +62,17 @@ def evaluate_model(best_model, x_test_scaled, y_test, label_encoder):
     # Save confusion matrix as an image
     make_folder_if_missing(GRAPH_FOLDER)
     cm = confusion_matrix(y_test, y_pred)
-    plt.figure(figsize=(10, 8))
+    class_names = label_encoder.classes_
+    plt.figure(figsize=(6, 5))
     plt.imshow(cm, cmap="Blues")
     plt.title("Confusion Matrix")
     plt.xlabel("Predicted Label")
     plt.ylabel("Actual Label")
+    plt.xticks(range(len(class_names)), class_names)
+    plt.yticks(range(len(class_names)), class_names)
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            plt.text(j, i, cm[i, j], ha="center", va="center", fontsize=14)
     plt.colorbar()
     plt.tight_layout()
     plt.savefig(GRAPH_FOLDER + "/confusion_matrix.png")

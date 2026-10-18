@@ -32,7 +32,7 @@ from prediction import predict_disease
 
 
 def main():
-    print_heading("MULTI-DISEASE PREDICTION SYSTEM USING MACHINE LEARNING")
+    print_heading("HEART DISEASE PREDICTION SYSTEM USING MACHINE LEARNING")
 
     # Step 1: Data Preprocessing
     x_train, x_test, y_train, y_test, feature_columns, label_encoder, data = preprocess_data()
@@ -55,7 +55,7 @@ def main():
     # Step 6: Additional Visualizations
     run_visualizations(accuracy_table, best_model, feature_columns, data)
 
-    # Step 7: Disease Prediction (interactive, user enters symptoms)
+    # Step 7: Disease Prediction (interactive, user enters patient details)
     predict_disease(best_model, scaler, label_encoder, feature_columns)
 
     print_heading("PROJECT EXECUTION COMPLETED SUCCESSFULLY")
